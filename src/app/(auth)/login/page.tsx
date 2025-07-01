@@ -7,6 +7,7 @@ import z from "zod";
 
 import userIcon from "public/user.png";
 import passwordIcon from "public/padlock.png";
+import { validarCredentials } from "@/app/lib/credentials";
 
 export interface LoginCredentials {
     email: string,
@@ -45,7 +46,12 @@ export default function LoginPage() {
             return;
         }
 
-        // Validação de credenciais aqui
+        const loginValidacao = await validarCredentials(loginData);
+
+        if (loginValidacao) {
+            toast.error(loginValidacao.error);
+            return;
+        }
     }
 
     // Estrutura do form:

@@ -1,10 +1,15 @@
 "use client";
 
-import { criarUsuario } from "@/app/lib/credentials";
 import toast from "react-hot-toast";
 import { z } from "zod";
+
 import { LoginCredentials } from "../login/page";
+import { criarUsuario } from "@/app/lib/credentials";
 import { redirect } from "next/navigation";
+import Image from "next/image";
+
+import userIcon from "public/user.png";
+import passwordIcon from "public/padlock.png";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -24,7 +29,7 @@ const CreateSchema = z.object({
 });
 
 export default function CreateUser() {
-    const clientCreateUser = async (formData: FormData) => {
+    const createAction = async (formData: FormData) => {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const confPassword = formData.get("conf-password") as string;
@@ -54,6 +59,36 @@ export default function CreateUser() {
             console.error("Erro ao criar usuário");
         }
     }
-}
 
-// implementar HTML. Preguiça
+    return (
+        <form className="login-form" action={createAction}>
+            <div>
+                <h2>Cadastro</h2>
+            </div>
+            <div>
+                <section className="user-input">
+                    <Image
+                        src={userIcon}
+                        alt="Ícone de usuário"
+                    />
+                    <input type="email" name="email" id="email" placeholder="E-mail" aria-label="E-mail"/>
+                </section>
+                <section className="user-input">
+                    <Image
+                        src={passwordIcon}
+                        alt="Ícone de cadeado"
+                    />
+                    <input type="password" name="password" id="password" placeholder="Senha" aria-label="Senha"/>
+                </section>
+                <section className="user-input">
+                    <Image
+                        src={passwordIcon}
+                        alt="Ícone de cadeado"
+                    />
+                    <input type="password" name="conf-password" id="conf-password" placeholder="Confirmar Senha" aria-label="Confirmar Senha"/>
+                </section>
+            </div>
+            <button>Cadastrar</button>
+        </form>
+    )
+}
