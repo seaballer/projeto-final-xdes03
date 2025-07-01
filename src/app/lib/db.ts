@@ -3,7 +3,7 @@ import path from "path";
 
 const dbPathBase = path.join(process.cwd(), "src", "app", "db");
 
-async function dbLer<T>(arquivo: string): Promise<T> {
+async function dbLer(arquivo: string): Promise<Array<any>> {
     const dbPath = path.join(dbPathBase, arquivo);
     const dados = await fs.readFile(dbPath, "utf-8");
 

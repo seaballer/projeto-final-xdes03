@@ -1,7 +1,7 @@
 "use server";
 
-import { jwtVerify } from "jose";
-import type { JWTClaimSet } from "jose";    // Esse tipo é mais robusto que o JWTPayload genérico (segundo a internet)
+import { JWTPayload, jwtVerify, SignJWT } from "jose";
+import { cookies } from "next/headers";
 
 const obterChave = (): Uint8Array => {
     const chave = process.env.TOKEN;
@@ -12,7 +12,7 @@ const obterChave = (): Uint8Array => {
     return new TextEncoder().encode(chave);
 }
 
-async function verificarTokenSessao<T = JWTClaimSet>(token: string): Promise<T> {
+async function verificarTokenSessao(token: string) {
     // passo a passo pra colocar a token no seu PC:
     // (bash)
     // touch .env                                           ; cria o arquivo .env na pasta
@@ -24,9 +24,44 @@ async function verificarTokenSessao<T = JWTClaimSet>(token: string): Promise<T> 
     // e cole a token gerada SEM AS ASPAS.
     // Isso só precisa ser feito uma vez
     try {
-        const {payload} = await jwtVerify(token, obterChave(), {
+        const chave = await jwtVerify(token, obterChave(), {
             algorithms: ["HS256"] 
         });
-        return payload as T;
+        return chave.payload;
     }
+    catch (erro) {
+        console.error("Token inválido", erro);
+        return null;
+    }
+}
+
+export async function criarTokenSessao(userId: string, userEmail: string) {
+    const chave = obterChave();
+    const expiracao = new Date(Date.now() + 60*60*1000);    // 1h
+    const sessao = await new SignJWT({userId, userEmail})
+    .setProtectedHeader({alg:"HS256"})
+    .setExpirationTime("1h")
+    .sign(chave)
+    
+    const cookieStore = await cookies();
+    cookieStore.set("session", sessao, {
+        path: "/",
+        httpOnly: true,
+        expires: expiracao
+    });
+}
+
+export async function obterSessao() {
+    const cookieSessao = (await cookies()).get("session");
+
+    if (!cookieSessao)
+        return null;
+
+    const sessao = await verificarTokenSessao(cookieSessao.value);
+    return sessao;
+}
+
+export async function deletarCookieSessao() {
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
 }

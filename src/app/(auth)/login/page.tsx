@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
 import Image from "next/image";
+import Link from "next/link";
 import toast from "react-hot-toast";
 import z from "zod";
 
 import userIcon from "public/user.png";
 import passwordIcon from "public/padlock.png";
-import Link from "next/link";
 
-export interface LoginCredentials{
+export interface LoginCredentials {
     email: string,
     password: string
 }
