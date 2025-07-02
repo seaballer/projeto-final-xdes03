@@ -51,7 +51,7 @@ export async function criarTokenSessao(userId: string, userEmail: string) {
     });
 }
 
-export async function obterSessao() {
+export async function obterSessaoSeValida() {
     const cookieSessao = (await cookies()).get("session");
 
     if (!cookieSessao)
