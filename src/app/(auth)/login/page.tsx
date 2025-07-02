@@ -1,5 +1,7 @@
 'use client';
 
+import "@/app/styles/login.css";
+
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -35,14 +37,11 @@ export default function LoginPage() {
         const result = LoginSchema.safeParse(loginData);
 
         if (!result.success) {
-            let errorMsg = "";
-
-            result.error.issues.forEach((issue) => {
-                errorMsg = errorMsg + issue.message + ". ";
-            })
-
+            const errorMsg = result.error.issues
+                .map(issue => issue.message)
+                .join(". ") + ".";
+            
             toast.error(errorMsg);
-
             return;
         }
 
