@@ -1,6 +1,6 @@
 "use server";
 
-import bcrypt from 'bcryptjs';    // npm i bcrypt
+import bcrypt from 'bcryptjs';    // npm i bcryptjs
 
 import { LoginCredentials } from "../(auth)/login/page";
 import DB from "./db";
