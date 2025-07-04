@@ -81,9 +81,10 @@ export default function CreateUser() {
             </Typography>
 
             <TextField
-                label="E-mail"
+                name="email"
                 id="email"
                 type="email"
+                label="E-mail"
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -96,9 +97,10 @@ export default function CreateUser() {
             />
 
             <TextField
-                label="Senha"
+                name="password"
                 id="password"
                 type="password"
+                label="Senha"
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -111,9 +113,10 @@ export default function CreateUser() {
             />
 
             <TextField
-                label="Confirmar senha"
+                name="conf-password"
                 id="conf-password"
                 type="conf-password"
+                label="Confirmar senha"
                 slotProps={{
                     input: {
                         endAdornment: (

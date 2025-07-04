@@ -74,9 +74,10 @@ export default function LoginPage() {
             </Typography>
 
             <TextField
-                label="E-mail"
+                name="email"
                 id="email"
                 type="email"
+                label="E-mail"
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -89,9 +90,10 @@ export default function LoginPage() {
             />
 
             <TextField
-                label="Senha"
+                name="password"
                 id="password"
                 type="password"
+                label="Senha"
                 slotProps={{
                     input: {
                         endAdornment: (
