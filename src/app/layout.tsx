@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
+import Footer from "./ui/footer";
+import Header from "./ui/header";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -19,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Header />
         {children}
+        <Footer />
         <Toaster position="top-right" />
       </body>
     </html>
