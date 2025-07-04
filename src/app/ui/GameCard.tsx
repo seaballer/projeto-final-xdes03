@@ -7,8 +7,7 @@ export interface GameProps{
     id: number,
     nome: string,
     img: string,
-    descricao: string,
-    avaliacao: number
+    descricao: string
 }
 
 export default function GameCard(props: GameProps) {
@@ -44,7 +43,6 @@ export default function GameCard(props: GameProps) {
                     <button id="btn-delete">Deletar</button>
                 </form>
             </div>
-            <p>Avaliação: ${props.avaliacao}</p>
         </div>
     )
 }

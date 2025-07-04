@@ -1,20 +1,43 @@
+'use client'
 import DB from "@/app/lib/db"
 import { redirect } from "next/navigation"
 import Image from "next/image"
+import { useState } from "react"
+import GameCard from "@/app/ui/GameCard"
+import { GameProps } from "@/app/ui/GameCard"
+import axios from 'axios'
 
 const arquivo = 'jogos-salvos.json'
 
-const CreateGame = () => {
+export default function CreateGame() {
+
+    const [gameCardState, setGameCardState] = useState<GameProps | null>(null)
 
     const SearchGame = async (formData:FormData) => {
-        'use server'
-        const nomeJogo = formData.get('search_name')
+        const nomeJogo = formData.get('search_name') as string
 
-        if (!nomeJogo) {
-            console.log('Busca inválida ou vazia')
-            return
+        const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`)
+
+        let newGameCard: GameProps
+
+        if (data.length === 0) {
+            newGameCard = {
+                id: 0,
+                nome: 'Jogo não encontrado',
+                img: 'https://cdn-icons-png.flaticon.com/512/6659/6659895.png',
+                descricao: ''
+            }            
+        }
+        else {
+            newGameCard = {
+                id: data[0].id,
+                nome: data[0].nome,
+                img: data[0].img,
+                descricao: data[0].descricao
+            }
         }
 
+        setGameCardState(newGameCard)
     }    
 
     return (
@@ -37,8 +60,7 @@ const CreateGame = () => {
                 />
             </button>
         </form>
+        {gameCardState && <GameCard {...gameCardState} />}
     </section>
     )
 }
-
-export default CreateGame
