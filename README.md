@@ -1,7 +1,14 @@
 ### MyGameList
+## Projeto Final da disciplina de XDES03.
 
-Projeto final da disciplina de XDES03, co-autorado por Lucas Barbosa Pena e Henrique Oliveira Batista.
+# Layout:
 
-O projeto consiste em um sistema de listagem e classificação de videogames baseado em Next.
+<li>Página inicial com cards de jogos (pegos pelo API do Metacritic)</li>
+<li>Botão de "cadastrar" e "login" que leva às respectivas páginas</li>
+<li>Dentro do login, a lista do usuário com jogos registrados</li>
+<li>Botões para adicionar jogo</li>
+<li>Opção de remover jogo e de dar nota pessoal dentro do card</li>
 
-colocar mais coisa aqui
+# API utilizada:
+
+<a href="https://github.com/chrismichaelps/metacritic">unofficial-metacritic por chrismichaelps</a>

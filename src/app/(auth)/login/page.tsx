@@ -1,13 +1,14 @@
 'use client';
 
-import React, { FormEvent } from "react";
+import "@/app/styles/login.css";
+
+import Image from "next/image";
+import Link from "next/link";
 import toast from "react-hot-toast";
 import z from "zod";
-import Link from "next/link";
 
-import { Box, Button, InputAdornment, Link as MuiLink, TextField, Typography } from "@mui/material";
-import { Email, Lock } from "@mui/icons-material";
-
+import userIcon from "public/user.png";
+import passwordIcon from "public/padlock.png";
 import { validarCredentials } from "@/app/lib/credentials";
 
 export interface LoginCredentials {
@@ -27,19 +28,19 @@ const LoginSchema = z.object({
 })
 
 export default function LoginPage() {
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-
+    const loginAction = async (formData: FormData) => {
         const loginData: LoginCredentials = {
             email: formData.get("email") as string,
             password: formData.get("password") as string
-        };
+        }
 
         const result = LoginSchema.safeParse(loginData);
 
         if (!result.success) {
-            const errorMsg = result.error.issues.map(issue => issue.message).join(". ") + ".";
+            const errorMsg = result.error.issues
+                .map(issue => issue.message)
+                .join(". ") + ".";
+            
             toast.error(errorMsg);
             return;
         }
@@ -50,67 +51,39 @@ export default function LoginPage() {
             toast.error(loginValidacao.error);
             return;
         }
-
-        toast.success("Login realizado com sucesso!");
     }
 
+    // Estrutura do form:
+    // Título no topo
+    // Input de login
+    // Input de senha
+    // Botão de login
+    // Botão de cadastro
     return (
-       <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-                width: '100%',
-                maxWidth: 360,
-                mx: 'auto',
-                mt: 10,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-                p: 3
-            }}
-        >
-            <Typography variant="h4" align="center">
-                Login
-            </Typography>
-
-            <TextField
-                label="E-mail"
-                id="email"
-                type="email"
-                slotProps={{
-                    input: {
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <Email />
-                            </InputAdornment>
-                        ),
-                    },
-                }}
-            />
-
-            <TextField
-                label="Senha"
-                id="password"
-                type="password"
-                slotProps={{
-                    input: {
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                    <Lock />
-                            </InputAdornment>
-                        ),
-                    },
-                }}
-            />
-
-            <Button type="submit" variant="contained" fullWidth>
-                Entrar
-            </Button>
-
-            <Typography variant="body2" align="center">
-                Não tem conta? Clique{' '}<MuiLink component={Link} href="/create" underline="hover">aqui</MuiLink>
-            </Typography>
-
-        </Box>
+        <form className="login-form" action={loginAction}>
+            <div>
+                <h2>Login</h2>
+            </div>
+            <div>
+                <section className="user-input">
+                    <Image
+                        src={userIcon}
+                        alt="Ícone de usuário"
+                    />
+                    <input type="email" name="email" id="email" placeholder="E-mail" aria-label="E-mail"/>
+                </section>
+                <section className="user-input">
+                    <Image
+                        src={passwordIcon}
+                        alt="Ícone de cadeado"
+                    />
+                    <input type="password" name="password" id="password" placeholder="Senha" aria-label="Senha"/>
+                </section>
+            </div>
+            <button>Entrar</button>
+            <div className="link-cadastro">
+                Não tem conta? Clique <Link className="btn-cadastro" href="/create">aqui</Link>
+            </div>
+        </form>
     )
 }
