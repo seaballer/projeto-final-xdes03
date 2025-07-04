@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Footer from "./ui/footer";
 import Header from "./ui/header";
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 export const metadata: Metadata = {
   title: "Ranking de jogos",
