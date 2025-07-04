@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import Footer from "./ui/footer";
+import Header from "./ui/header";
 
 export const metadata: Metadata = {
   title: "Ranking de jogos",
@@ -15,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Header />
         {children}
+        <Footer />
         <Toaster position="top-right" />
       </body>
     </html>
