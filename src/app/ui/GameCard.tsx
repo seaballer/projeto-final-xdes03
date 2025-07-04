@@ -1,7 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import DB from "../lib/db"
-import { redirect } from "next/navigation"
+import { deleteGame } from "../lib/action"
 
 export interface GameProps{
     id: number,
@@ -11,21 +10,6 @@ export interface GameProps{
 }
 
 export default function GameCard(props: GameProps) {
-
-    const db: string = 'jogos-salvos.json'
-
-    const deleteGame = async () => {
-        'use server';
-        const game = await DB.dbLer(db);
-
-        const gameToRemove =  game.findIndex((p) => p.id === props.id);
-
-        game.splice(gameToRemove,1);
-
-        await DB.dbSalvar(db, game)
-
-        redirect('/dashboard');
-    }
 
     return (
         <div className="">
@@ -39,7 +23,7 @@ export default function GameCard(props: GameProps) {
             <p>{props.descricao}</p>
             <div className="">
                 <Link href={`/dashboard/edit/${props.id}`} id="btn-edit">Editar</Link>
-                <form action={deleteGame}>
+                <form action={deleteGame.bind(null, props.id)}>
                     <button id="btn-delete">Deletar</button>
                 </form>
             </div>

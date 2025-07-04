@@ -8,5 +8,10 @@
     "id": "af073fd1-c9cc-4812-85c7-e0a6c10bed98",
     "email": "henrique@yahoo.com",
     "password": "$2b$10$IROrXyuzC5T68CEMGwO8MuG9loNjdDO.WgwTypgEd0Vhu9f2oMFbi"
+  },
+  {
+    "id": "28bcae30-59dc-4bfc-bb03-79053c24df06",
+    "email": "teste@gmail.com",
+    "password": "$2b$10$5zoWX1U3Uwve.of6mjM/BuRY0gFintNwwkbicPIciDGgBe88Dd91u"
   }
 ]
