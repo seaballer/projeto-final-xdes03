@@ -6,10 +6,9 @@ import { z } from "zod";
 import { LoginCredentials } from "../login/page";
 import { criarUsuario } from "@/app/lib/credentials";
 import { redirect } from "next/navigation";
-import Image from "next/image";
-
-import userIcon from "public/user.png";
-import passwordIcon from "public/padlock.png";
+import { FormEvent } from "react";
+import { Box, Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { Email, Lock } from "@mui/icons-material";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -29,7 +28,9 @@ const CreateSchema = z.object({
 });
 
 export default function CreateUser() {
-    const createAction = async (formData: FormData) => {
+     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const confPassword = formData.get("conf-password") as string;
@@ -61,34 +62,73 @@ export default function CreateUser() {
     }
 
     return (
-        <form className="login-form" action={createAction}>
-            <div>
-                <h2>Cadastro</h2>
-            </div>
-            <div>
-                <section className="user-input">
-                    <Image
-                        src={userIcon}
-                        alt="Ícone de usuário"
-                    />
-                    <input type="email" name="email" id="email" placeholder="E-mail" aria-label="E-mail"/>
-                </section>
-                <section className="user-input">
-                    <Image
-                        src={passwordIcon}
-                        alt="Ícone de cadeado"
-                    />
-                    <input type="password" name="password" id="password" placeholder="Senha" aria-label="Senha"/>
-                </section>
-                <section className="user-input">
-                    <Image
-                        src={passwordIcon}
-                        alt="Ícone de cadeado"
-                    />
-                    <input type="password" name="conf-password" id="conf-password" placeholder="Confirmar Senha" aria-label="Confirmar Senha"/>
-                </section>
-            </div>
-            <button>Cadastrar</button>
-        </form>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+                width: '100%',
+                maxWidth: 360,
+                mx: 'auto',
+                mt: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                p: 3
+            }}
+        >
+            <Typography variant="h4" align="center">
+                Cadastro
+            </Typography>
+
+            <TextField
+                label="E-mail"
+                id="email"
+                type="email"
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <Email />
+                            </InputAdornment>
+                        ),
+                    },
+                }}
+            />
+
+            <TextField
+                label="Senha"
+                id="password"
+                type="password"
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                    <Lock />
+                            </InputAdornment>
+                        ),
+                    },
+                }}
+            />
+
+            <TextField
+                label="Confirmar senha"
+                id="conf-password"
+                type="conf-password"
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                    <Lock />
+                            </InputAdornment>
+                        ),
+                    },
+                }}
+            />
+
+            <Button type="submit" variant="contained" fullWidth>
+                Cadastrar
+            </Button>
+
+        </Box>
     )
 }
