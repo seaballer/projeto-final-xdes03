@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios'
+import axios from 'axios';
 
 export async function GET(request: Request) {
   const apiKey = process.env.RAWG_API_KEY;

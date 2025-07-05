@@ -3,7 +3,7 @@
 import React, { FormEvent } from "react";
 import toast from "react-hot-toast";
 import z from "zod";
-import Link from "next/link";
+import Link from "next/link";   // diferente do link do mui que é estilização apenas
 
 import { Box, Button, InputAdornment, Link as MuiLink, TextField, Typography } from "@mui/material";
 import { Email, Lock } from "@mui/icons-material";
@@ -70,7 +70,7 @@ export default function LoginPage() {
             }}
         >
             <Typography variant="h4" align="center">
-                Login
+                Entrar
             </Typography>
 
             <TextField
@@ -109,7 +109,7 @@ export default function LoginPage() {
                 Entrar
             </Button>
 
-            <Typography variant="body2" align="center">
+            <Typography variant="body1" align="center">
                 Não tem conta? Clique{' '}<MuiLink component={Link} href="/create" underline="hover">aqui</MuiLink>
             </Typography>
 

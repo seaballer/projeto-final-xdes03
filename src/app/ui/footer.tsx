@@ -1,9 +1,28 @@
-import Link from "next/link"
+'use client';
+
+import { Box, Typography, Link as MuiLink } from '@mui/material';
 
 export default function Footer() {
-    return (
-        <footer>
-            <p>Feito por <Link href='https://github.com/HenriqueBatista1' target="blank">Henrique</Link> e <Link href='https://github.com/seaballer' target="blank">Lucas</Link></p>
-        </footer>
-    )
+  return (
+    <Box
+      component="footer"
+      sx={{
+        textAlign: 'center',
+        py: 2,
+        mt: 4,
+        borderTop: '1px solid #ccc',
+      }}
+    >
+      <Typography variant="body2">
+        Feito por{' '}
+        <MuiLink href="https://github.com/HenriqueBatista1" target="_blank" rel="noopener noreferrer">
+          Henrique Oliveira Batista
+        </MuiLink>{' '}
+        e{' '}
+        <MuiLink href="https://github.com/seaballer" target="_blank" rel="noopener noreferrer">
+          Lucas Barbosa Pena
+        </MuiLink>
+      </Typography>
+    </Box>
+  );
 }

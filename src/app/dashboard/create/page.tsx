@@ -1,10 +1,10 @@
 'use client'
-import Image from "next/image"
-import { useState } from "react"
-import GameCard from "@/app/ui/GameCard"
-import { GameProps } from "@/app/ui/GameCard"
-import axios from 'axios'
-import { addGame } from "@/app/lib/action"
+import Image from "next/image";
+import { useState } from "react";
+import GameCard from "@/app/ui/GameCard";
+import { GameProps } from "@/app/ui/GameCard";
+import axios from 'axios';
+import { addGame } from "@/app/lib/action";
 
 
 export default function CreateGame() {

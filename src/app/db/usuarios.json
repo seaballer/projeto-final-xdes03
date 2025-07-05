@@ -13,5 +13,20 @@
     "id": "28bcae30-59dc-4bfc-bb03-79053c24df06",
     "email": "teste@gmail.com",
     "password": "$2b$10$5zoWX1U3Uwve.of6mjM/BuRY0gFintNwwkbicPIciDGgBe88Dd91u"
+  },
+  {
+    "id": "252ea425-fa32-412a-b808-eb871af53700",
+    "email": "lucas2@email.com",
+    "password": "$2b$10$.6o0KP4/WtNPPBJMKf3soOzv1htVXV/NKWUiFP1C.E2zAYIPH9V7m"
+  },
+  {
+    "id": "56b079ea-dba4-4387-a641-7fdccf4a38a1",
+    "email": "lucas3@email.com",
+    "password": "$2b$10$eExEpzSAsrBGL2sHPOBAgOIhnueLc0xcZqQCPuJHxp2h.nRO1FsCG"
+  },
+  {
+    "id": "07248f45-e3b7-48a7-a36b-e4ea2a8cd080",
+    "email": "lucas4@email.com",
+    "password": "$2b$10$2VON.4Udeqgi17GlU7qBkunaZJbuRAj8yesHIf6/Fh.7WAbh6CM7e"
   }
 ]

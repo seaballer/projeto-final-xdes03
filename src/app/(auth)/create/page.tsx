@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { LoginCredentials } from "../login/page";
 import { criarUsuario } from "@/app/lib/credentials";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { Box, Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { Email, Lock } from "@mui/icons-material";
@@ -28,12 +28,15 @@ const CreateSchema = z.object({
 });
 
 export default function CreateUser() {
+    // precisamos usar o useRouter aqui pq a página create é client-side!!!
+    const router = useRouter();
+
      const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
-        const confPassword = formData.get("conf-password") as string;
+        const confPassword = formData.get("confPassword") as string;
         const data = {email, password, confPassword};
 
         const resultado = CreateSchema.safeParse(data);
@@ -53,11 +56,11 @@ export default function CreateUser() {
                 toast.error(retorno.error);
             } else if (retorno.success) {
                 toast.success(retorno.success);
-                redirect("/login");
+                router.push("/login");
             }
         } catch (error: any) {
             toast.error("Erro ao criar usuário");
-            console.error("Erro ao criar usuário");
+            console.log(error);
         }
     }
 
@@ -113,9 +116,9 @@ export default function CreateUser() {
             />
 
             <TextField
-                name="conf-password"
-                id="conf-password"
-                type="conf-password"
+                name="confPassword"
+                id="confPassword"
+                type="password"
                 label="Confirmar senha"
                 slotProps={{
                     input: {
