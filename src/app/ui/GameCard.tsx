@@ -6,7 +6,9 @@ export interface GameProps{
     id: number,
     nome: string,
     img: string,
-    descricao: string
+    descricao: string,
+    comentario?: string,
+    variant?: 'dashboard' | 'searchResult';
 }
 
 export default function GameCard(props: GameProps) {
@@ -21,12 +23,20 @@ export default function GameCard(props: GameProps) {
                 alt={`Imagem do pokémon ${props.nome}`}
             />
             <p>{props.descricao}</p>
-            <div className="">
-                <Link href={`/dashboard/edit/${props.id}`} id="btn-edit">Editar</Link>
-                <form action={deleteGame.bind(null, props.id)}>
-                    <button id="btn-delete">Deletar</button>
-                </form>
-            </div>
+            {props.comentario && (
+                <div>
+                    <p>Comentário do usuário:</p>
+                    <p>{props.comentario}</p>
+                </div>
+            )}
+            {props.variant === 'dashboard' && (
+                <div className="">
+                    <Link href={`/dashboard/edit/${props.id}`} id="btn-edit">Editar</Link>
+                    <form action={deleteGame.bind(null, props.id)}>
+                        <button id="btn-delete">Deletar</button>
+                    </form>
+                </div>
+            )}
         </div>
     )
 }

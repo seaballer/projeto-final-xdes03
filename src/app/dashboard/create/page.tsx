@@ -6,7 +6,6 @@ import { GameProps } from "@/app/ui/GameCard"
 import axios from 'axios'
 import { addGame } from "@/app/lib/action"
 
-const arquivo = 'jogos-salvos.json'
 
 export default function CreateGame() {
 
@@ -19,10 +18,11 @@ export default function CreateGame() {
         const nomeJogo = formData.get('search_name') as string
 
         const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`)
+        const detalhesDoJogo = await axios.get(`/api/details?id=${data.results[0].id}`)
 
         let newGameCard: GameProps
 
-        const results = data.results[0]
+        const results = detalhesDoJogo.data
 
         if (!nomeJogo || nomeJogo.length === 0) {
             newGameCard = {
@@ -37,16 +37,18 @@ export default function CreateGame() {
                 id: results.id,
                 nome: results.name,
                 img: results.background_image,
-                descricao: results.description
+                descricao: results.description_raw
             }            
         }
 
         setGameCardState(newGameCard)
     }    
 
-    const SaveGame = async () => {
+    const SaveGame = async (formData:FormData) => {
+        const comentario = formData.get('comentario') as string
         if (gameCardState && gameCardState.id !== 0) {
             setIsSaving(true)
+            gameCardState.comentario = comentario
             await addGame(gameCardState)
         }
     }
@@ -73,9 +75,17 @@ export default function CreateGame() {
         </form>
         {gameCardState && <GameCard {...gameCardState} />}
         {gameCardState && gameCardState.id !== 0 && (
-            <button onClick={SaveGame} disabled={isSaving}>
-                {isSaving ? 'Salvando...' : 'Adicionar jogo'}
-            </button>
+            <form action={SaveGame}>
+                <input 
+                    type="text"
+                    id="comentario"
+                    name="comentario"
+                />
+                <label htmlFor="comentario"></label>
+                <button disabled={isSaving}>
+                    {isSaving ? 'Salvando...' : 'Adicionar jogo'}
+                </button>
+            </form>
         )}
     </section>
     )

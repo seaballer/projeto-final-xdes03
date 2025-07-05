@@ -9,7 +9,7 @@ export default async function DisplayGames() {
     const dados = await DB.dbLer(db)
 
     const games = dados.map((game) => {
-        return <GameCard {...game} key={game.id}/>
+        return <GameCard {...game} key={game.id} variant="dashboard"/>
     })
 
     return (

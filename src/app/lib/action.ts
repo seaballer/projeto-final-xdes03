@@ -33,6 +33,7 @@ export const addGame = async (gameToSave: GameProps) => {
         redirect('/dashboard')
     }
     else {
+        delete gameToSave.variant; //Para não poluir o json
         db.push(gameToSave)
         await DB.dbSalvar(arquivo, db)
         revalidatePath('/dashboard')
