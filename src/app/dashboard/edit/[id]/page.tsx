@@ -2,6 +2,7 @@ import { GameProps } from "@/app/ui/GameCard";
 import DB from "@/app/lib/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const arquivo = 'jogos-salvos.json'
 
@@ -43,6 +44,7 @@ export default async function EditGame({params} : EditGameProps) {
 
     return (
         <div>
+            <Link href="/dashboard">Voltar</Link>
             <h2>{gameToEdit.nome}</h2>
             <Image src={gameToEdit.img}
                 alt=""

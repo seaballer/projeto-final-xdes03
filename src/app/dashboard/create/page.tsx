@@ -5,6 +5,7 @@ import GameCard from "@/app/ui/GameCard";
 import { GameProps } from "@/app/ui/GameCard";
 import axios from 'axios';
 import { addGame } from "@/app/lib/action";
+import Link from "next/link";
 
 
 export default function CreateGame() {
@@ -55,6 +56,7 @@ export default function CreateGame() {
 
     return (
     <section>
+        <Link href="/dashboard">Voltar</Link>
         <form action={SearchGame} className="">
             <input 
                 type="text"
