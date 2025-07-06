@@ -1,6 +1,16 @@
 import Link from "next/link"
+import { obterSessaoSeValida } from "../lib/session";
+import LogoutButton from "./logoutButton";
 
-export default function Header() {
+export default async function Header() {
+
+    const isLogged = await obterSessaoSeValida();
+    let userEmail: string = "";
+    if(isLogged)
+    {
+        userEmail = isLogged?.userEmail as string;
+    }
+
     return (
         <header>
             <section className=''>
@@ -10,6 +20,9 @@ export default function Header() {
                     <li><Link href='https://rawg.io/apidocs' target="blank">RAWG API</Link></li>
                 </ul>
             </nav>
+            </section>
+            <section>
+                {isLogged && <LogoutButton />}
             </section>
         </header>
     )
