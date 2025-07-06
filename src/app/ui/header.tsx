@@ -6,10 +6,10 @@ import UserInfo from "./userInfo";
 export default async function Header() {
 
     const isLogged = await obterSessaoSeValida();
-    let userName: string = "";
+    let userEmail: string = "";
     if(isLogged)
     {
-        userName = isLogged?.userName as string;
+        userEmail = isLogged?.userEmail as string;
     }
 
     return (
@@ -23,7 +23,7 @@ export default async function Header() {
             </nav>
             </section>
             <section>
-                {isLogged && <UserInfo userName={userName}/>}
+                {isLogged && <UserInfo userEmail={userEmail}/>}
                 {isLogged && <LogoutButton />}
             </section>
         </header>

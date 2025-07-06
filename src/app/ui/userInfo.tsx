@@ -1,11 +1,11 @@
 export interface IUserInfo{
-    userName: string
+    userEmail: string
 }
 
 export default function UserInfo(userInfo: IUserInfo){
 
     const regex = /@.*/i;
-    const atIndex = userInfo.userName.replace(regex,"");
+    const atIndex = userInfo.userEmail.replace(regex,"");
 
     return(
         <p className='p'>Olá, {atIndex}</p>
