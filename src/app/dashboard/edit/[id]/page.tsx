@@ -10,7 +10,10 @@ interface EditGameProps {
 }
 
 export default async function EditGame({params} : EditGameProps) {
-    const id = parseInt(params.id, 10);
+
+    const resolvedParams = await params;
+
+    const id = parseInt(resolvedParams.id, 10);
     
     const gameDB = await DB.dbLer(arquivo);
 
