@@ -1,14 +1,15 @@
 import Link from "next/link"
 import { obterSessaoSeValida } from "../lib/session";
 import LogoutButton from "./logoutButton";
+import UserInfo from "./userInfo";
 
 export default async function Header() {
 
     const isLogged = await obterSessaoSeValida();
-    let userEmail: string = "";
+    let userName: string = "";
     if(isLogged)
     {
-        userEmail = isLogged?.userEmail as string;
+        userName = isLogged?.userName as string;
     }
 
     return (
@@ -22,6 +23,7 @@ export default async function Header() {
             </nav>
             </section>
             <section>
+                {isLogged && <UserInfo userName={userName}/>}
                 {isLogged && <LogoutButton />}
             </section>
         </header>
