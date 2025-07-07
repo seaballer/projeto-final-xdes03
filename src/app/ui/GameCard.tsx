@@ -15,6 +15,7 @@ export interface GameProps{
     metacritic: number,
     avaliacao?: number,
     comentario?: string,
+    userId?: string,
     variant?: 'dashboard' | 'searchResult'
 }
 

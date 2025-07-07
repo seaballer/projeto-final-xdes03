@@ -3,6 +3,8 @@ import DB from "@/app/lib/db";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { obterSessaoSeValida } from "@/app/lib/session";
+import { revalidatePath } from "next/cache";
 
 const arquivo = 'jogos-salvos.json'
 
@@ -12,34 +14,65 @@ interface EditGameProps {
 
 export default async function EditGame({params} : EditGameProps) {
 
+    const sessao = await obterSessaoSeValida()
+
+    if (!sessao) {
+        throw new Error("Ação não autorizada. O usuário precisa estar logado.")
+    }
+
     const resolvedParams = await params;
 
     const id = parseInt(resolvedParams.id, 10);
     
     const gameDB = await DB.dbLer(arquivo);
 
-    const gameToEdit: GameProps = gameDB.find((p: GameProps) => p.id === id);
-    const gameToEditIndex: number = gameDB.findIndex((p) => p.id === id);
+    const gameToEditIndex: number = gameDB.findIndex((game) => game.id === id && game.userId === sessao.userId);
+
+    /* Caso o índice do jogo não for encontrado (gameToEditIndex === -1) */
+    if (gameToEditIndex === -1) {
+        return (
+            <div>
+                <h2>Jogo não encontrado</h2>
+                <p>Este jogo não existe na sua biblioteca ou você não tem permissão para editá-lo.</p>
+                <Link href="/dashboard">Voltar para o Dashboard</Link>
+            </div>
+        );
+    }
+
+    const gameToEdit: GameProps = gameDB[gameToEditIndex];
 
     const atualizarGame = async (dadosDoJogo: GameProps, formData : FormData) => {
         'use server';
 
-        const novoComentario = formData.get('comentario') as string
-        const novaAvaliacao = Number(formData.get('avaliacao'))
+        const sessao = await obterSessaoSeValida()
 
-        const updatedGame: GameProps = {
-            id: dadosDoJogo.id,
-            nome: dadosDoJogo.nome,
-            img: dadosDoJogo.img,
-            descricao: dadosDoJogo.descricao,
-            metacritic: dadosDoJogo.metacritic,
-            avaliacao: novaAvaliacao,
-            comentario: novoComentario
+        if(!sessao) {
+            throw new Error("Ação não autorizada. O usuário precisa estar logado.")
         }
 
-        gameDB.splice(gameToEditIndex,1,updatedGame);
+        const dbAtual = await DB.dbLer(arquivo) //Buscando o banco de dados mais recente antes de fazer o update
 
-        await DB.dbSalvar(arquivo, gameDB);
+        const gameToEditIndex: number = dbAtual.findIndex((game: GameProps) => game.id === dadosDoJogo.id && game.userId === sessao.userId) //Buscando o índice correto no banco de dados mais recente
+
+        if (gameToEditIndex > -1) {
+
+            const novoComentario = formData.get('comentario') as string
+            const novaAvaliacao = Number(formData.get('avaliacao'))
+
+            const updatedGame: GameProps = {
+                ...dadosDoJogo,
+                avaliacao: novaAvaliacao,
+                comentario: novoComentario,
+                userId: sessao.userId as string
+            }
+
+            dbAtual.splice(gameToEditIndex,1,updatedGame);
+
+            await DB.dbSalvar(arquivo, dbAtual);
+
+            revalidatePath('/dashboard')
+            revalidatePath(`/dashboard/edit/${id}`)
+        }
 
         redirect('/dashboard');
 
