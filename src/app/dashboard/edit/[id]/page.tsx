@@ -1,10 +1,9 @@
 import { GameProps } from "@/app/ui/GameCard";
 import DB from "@/app/lib/db";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { obterSessaoSeValida } from "@/app/lib/session";
-import { revalidatePath } from "next/cache";
+import { updateGame } from "@/app/lib/action";
 
 const arquivo = 'jogos-salvos.json'
 
@@ -41,43 +40,6 @@ export default async function EditGame({params} : EditGameProps) {
 
     const gameToEdit: GameProps = gameDB[gameToEditIndex];
 
-    const atualizarGame = async (dadosDoJogo: GameProps, formData : FormData) => {
-        'use server';
-
-        const sessao = await obterSessaoSeValida()
-
-        if(!sessao) {
-            throw new Error("Ação não autorizada. O usuário precisa estar logado.")
-        }
-
-        const dbAtual = await DB.dbLer(arquivo) //Buscando o banco de dados mais recente antes de fazer o update
-
-        const gameToEditIndex: number = dbAtual.findIndex((game: GameProps) => game.id === dadosDoJogo.id && game.userId === sessao.userId) //Buscando o índice correto no banco de dados mais recente
-
-        if (gameToEditIndex > -1) {
-
-            const novoComentario = formData.get('comentario') as string
-            const novaAvaliacao = Number(formData.get('avaliacao'))
-
-            const updatedGame: GameProps = {
-                ...dadosDoJogo,
-                avaliacao: novaAvaliacao,
-                comentario: novoComentario,
-                userId: sessao.userId as string
-            }
-
-            dbAtual.splice(gameToEditIndex,1,updatedGame);
-
-            await DB.dbSalvar(arquivo, dbAtual);
-
-            revalidatePath('/dashboard')
-            revalidatePath(`/dashboard/edit/${id}`)
-        }
-
-        redirect('/dashboard');
-
-    }
-
     return (
         <div>
             <Link href="/dashboard">Voltar</Link>
@@ -92,7 +54,7 @@ export default async function EditGame({params} : EditGameProps) {
             <p>{gameToEdit.descricao}</p>
             <p>Comentário:</p>
             <p>{gameToEdit.comentario}</p>
-            <form action={atualizarGame.bind(null, gameToEdit)} className="">
+            <form action={updateGame.bind(null, gameToEdit)} className="">
                 <p>Minha avaliação:</p>
                 <fieldset>
                     {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}

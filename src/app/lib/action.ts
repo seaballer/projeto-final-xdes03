@@ -58,3 +58,42 @@ export const addGame = async (gameToSave: GameProps) => {
     }
 
 }
+
+
+export const updateGame = async (dadosDoJogo: GameProps, formData : FormData) => {
+    'use server';
+
+    const sessao = await obterSessaoSeValida()
+
+    if(!sessao) {
+        throw new Error("Ação não autorizada. O usuário precisa estar logado.")
+    }
+
+    const db = await DB.dbLer(arquivo) //Buscando o banco de dados mais recente antes de fazer o update
+
+    const gameToEditIndex: number = db.findIndex((game: GameProps) => game.id === dadosDoJogo.id && game.userId === sessao.userId) //Buscando o índice correto no banco de dados mais recente
+
+    /* Se o indice do jogo for encontrado (gameToEditIndex > -1) faz o update */
+    if (gameToEditIndex > -1) {
+
+        const novoComentario = formData.get('comentario') as string
+        const novaAvaliacao = Number(formData.get('avaliacao'))
+
+        const updatedGame: GameProps = {
+            ...dadosDoJogo,
+            avaliacao: novaAvaliacao,
+            comentario: novoComentario,
+            userId: sessao.userId as string
+        }
+
+        db.splice(gameToEditIndex,1,updatedGame);
+
+        await DB.dbSalvar(arquivo, db);
+
+        revalidatePath('/dashboard')
+        revalidatePath(`/dashboard/edit/${dadosDoJogo.id}`)
+    }
+
+    redirect('/dashboard');
+
+}
