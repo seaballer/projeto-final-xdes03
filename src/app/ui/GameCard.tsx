@@ -56,7 +56,7 @@ export default function GameCard(props: GameProps) {
                         {props.comentario && (
                             <>
                                 <Typography variant="subtitle2" mt={1}>
-                                    Comentários:
+                                    Comentário:
                                 </Typography>
                                 <Typography variant="body2">
                                     {props.comentario}

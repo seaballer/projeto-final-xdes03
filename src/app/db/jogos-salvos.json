@@ -9,12 +9,12 @@
     "comentario": "Melhor jogo de 2015"
   },
   {
-    "id": 324997,
-    "nome": "Baldur's Gate III",
-    "img": "https://media.rawg.io/media/games/699/69907ecf13f172e9e144069769c3be73.jpg",
-    "descricao": "Gather your party, and return to the Forgotten Realms in a tale of fellowship and betrayal, sacrifice and survival, and the lure of absolute power.\r\n\r\nMysterious abilities are awakening inside you, drawn from a Mind Flayer parasite planted in your brain. Resist, and turn darkness against itself. Or embrace corruption, and become ultimate evil.\r\n\r\nFrom the creators of Divinity: Original Sin 2 comes a next-generation RPG, set in the world of Dungeons and Dragons.\r\n\r\nChoose from a wide selection of D&D races and classes, or play as an origin character with a hand-crafted background. Adventure, loot, battle and romance as you journey through the Forgotten Realms and beyond. Play alone, and select your companions carefully, or as a party of up to four in multiplayer.\r\n\r\nAbducted, infected, lost. You are turning into a monster, but as the corruption inside you grows, so does your power. That power may help you to survive, but there will be a price to pay, and more than any ability, the bonds of trust that you build within your party could be your greatest strength. Caught in a conflict between devils, deities, and sinister otherworldly forces, you will determine the fate of the Forgotten Realms together.\r\n\r\nForged with the new Divinity 4.0 engine, Baldur’s Gate 3 gives you unprecedented freedom to explore, experiment, and interact with a world that reacts to your choices. A grand, cinematic narrative brings you closer to your characters than ever before, as you venture through our biggest world yet.\r\n\r\nThe Forgotten Realms are a vast, detailed and diverse world, and there are secrets to be discovered all around you -- verticality is a vital part of exploration. Sneak, dip, shove, climb, and jump as you journey from the depths of the Underdark to the glittering rooftops of the Upper City. How you survive, and the mark you leave on the world, is up to you.",
-    "metacritic": 97,
-    "avaliacao": 5,
-    "comentario": ""
+    "id": 389186,
+    "nome": "Candy Crush",
+    "img": "https://media.rawg.io/media/screenshots/654/65409c02aaa9a5fbad70eb32ccad9d14.jpg",
+    "descricao": "Candy Crush\nA simple Candy Crush implementation using a 2D game engine architecture with C++ and SDL (MVC pattern).\nInstallation\n1. Unzip \"CandyCrush.zip\".\n2. Execute \"CandyCrush/Candy Crush.exe\" and enjoy!\nUsage\n- Move candies: Drag and Move mouse\n- Change between scenes: Space\n- Exit: Escape\nHistory\nCurrently in WIP! Available features:\n- Intro cinematic\n- Initial grid of candies generation from file\n- Candy swap\n- Candy grid clear\n- Score, moves and target with textures\n- Music for each scene\n- Etc.\nCredits\nJoan Ginard - Programmer\nLicense\nMIT LICENSE",
+    "metacritic": null,
+    "avaliacao": 4,
+    "comentario": "MELHOR JOGO DE CELULAR"
   }
 ]

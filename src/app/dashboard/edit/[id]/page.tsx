@@ -54,12 +54,14 @@ export default async function EditGame({params} : EditGameProps) {
                 width={100}
                 height={100}
                 style={{margin: "0 auto"}}
-            /> 
+            />
+            <p>Descrição: </p> 
             <p>{gameToEdit.descricao}</p>
+            <p>Comentário:</p>
             <p>{gameToEdit.comentario}</p>
             <form action={atualizarGame.bind(null, gameToEdit)} className="">
+                <p>Minha avaliação:</p>
                 <fieldset>
-                    <legend>Minha Avaliação</legend>
                     {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
                     <input type="radio" id="estrela5" name="avaliacao" value="5" defaultChecked={gameToEdit.avaliacao === 5}/>
                     <label htmlFor="estrela5">★</label>

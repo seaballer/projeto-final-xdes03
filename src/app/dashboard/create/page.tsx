@@ -88,14 +88,15 @@ export default function CreateGame() {
         {gameCardState && <GameCard {...gameCardState} />}
         {gameCardState && gameCardState.id !== 0 && (
             <form action={SaveGame}>
+                <p>Comentário:</p>
                 <input 
                     type="text"
                     id="comentario"
                     name="comentario"
                 />
                 <label htmlFor="comentario"></label>
+                <p>Minha avaliação:</p>
                 <fieldset>
-                    <legend>Minha Avaliação</legend>
                     {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
                     <input type="radio" id="estrela 5" name="avaliacao" value="5" />
                     <label htmlFor="estrela 5">★</label>
