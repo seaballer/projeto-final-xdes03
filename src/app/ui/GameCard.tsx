@@ -12,8 +12,10 @@ export interface GameProps{
     nome: string,
     img: string,
     descricao: string,
+    metacritic: number,
+    avaliacao?: number,
     comentario?: string,
-    variant?: 'dashboard' | 'searchResult';
+    variant?: 'dashboard' | 'searchResult'
 }
 
 export default function GameCard(props: GameProps) {
@@ -43,6 +45,14 @@ export default function GameCard(props: GameProps) {
                         <Typography variant="body2">
                             {props.descricao}
                         </Typography>
+                        <p>Avaliação do Metacritic:</p>
+                        <p>{props.metacritic}</p>
+                        {props.avaliacao && (
+                            <>
+                                <p>Minha avaliação:</p>
+                                <p>{props.avaliacao}</p>
+                            </>
+                        )}
                         {props.comentario && (
                             <>
                                 <Typography variant="subtitle2" mt={1}>

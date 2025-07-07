@@ -30,7 +30,8 @@ export default function CreateGame() {
                 id: 0,
                 nome: 'Jogo não encontrado',
                 img: 'https://cdn-icons-png.flaticon.com/512/6659/6659895.png',
-                descricao: ''
+                descricao: '',
+                metacritic: 0
             }
         }
         else {
@@ -38,7 +39,8 @@ export default function CreateGame() {
                 id: results.id,
                 nome: results.name,
                 img: results.background_image,
-                descricao: results.description_raw
+                descricao: results.description_raw,
+                metacritic: results.metacritic,
             }            
         }
 
@@ -47,10 +49,18 @@ export default function CreateGame() {
 
     const SaveGame = async (formData:FormData) => {
         const comentario = formData.get('comentario') as string
+        const avaliacao = Number(formData.get('avaliacao'))
+
         if (gameCardState && gameCardState.id !== 0) {
             setIsSaving(true)
-            gameCardState.comentario = comentario
-            await addGame(gameCardState)
+
+            const gameToSave: GameProps = {
+                ...gameCardState,
+                avaliacao: avaliacao,
+                comentario: comentario
+            }
+            
+            await addGame(gameToSave)
         }
     }
 
@@ -84,6 +94,24 @@ export default function CreateGame() {
                     name="comentario"
                 />
                 <label htmlFor="comentario"></label>
+                <fieldset>
+                    <legend>Minha Avaliação</legend>
+                    {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
+                    <input type="radio" id="estrela 5" name="avaliacao" value="5" />
+                    <label htmlFor="estrela 5">★</label>
+                    
+                    <input type="radio" id="estrela 4" name="avaliacao" value="4" />
+                    <label htmlFor="estrela 4">★</label>
+                    
+                    <input type="radio" id="estrela 3" name="avaliacao" value="3" />
+                    <label htmlFor="estrela 3">★</label>
+                    
+                    <input type="radio" id="estrela 2" name="avaliacao" value="2" />
+                    <label htmlFor="estrela 2">★</label>
+                    
+                    <input type="radio" id="estrela 1" name="avaliacao" value="1" />
+                    <label htmlFor="estrela 1">★</label>
+                </fieldset>
                 <button disabled={isSaving}>
                     {isSaving ? 'Salvando...' : 'Adicionar jogo'}
                 </button>

@@ -25,12 +25,15 @@ export default async function EditGame({params} : EditGameProps) {
         'use server';
 
         const novoComentario = formData.get('comentario') as string
+        const novaAvaliacao = Number(formData.get('avaliacao'))
 
         const updatedGame: GameProps = {
             id: dadosDoJogo.id,
             nome: dadosDoJogo.nome,
             img: dadosDoJogo.img,
             descricao: dadosDoJogo.descricao,
+            metacritic: dadosDoJogo.metacritic,
+            avaliacao: novaAvaliacao,
             comentario: novoComentario
         }
 
@@ -55,6 +58,24 @@ export default async function EditGame({params} : EditGameProps) {
             <p>{gameToEdit.descricao}</p>
             <p>{gameToEdit.comentario}</p>
             <form action={atualizarGame.bind(null, gameToEdit)} className="">
+                <fieldset>
+                    <legend>Minha Avaliação</legend>
+                    {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
+                    <input type="radio" id="estrela5" name="avaliacao" value="5" defaultChecked={gameToEdit.avaliacao === 5}/>
+                    <label htmlFor="estrela5">★</label>
+                    
+                    <input type="radio" id="estrela4" name="avaliacao" value="4" defaultChecked={gameToEdit.avaliacao === 4}/>
+                    <label htmlFor="estrela4">★</label>
+                    
+                    <input type="radio" id="estrela3" name="avaliacao" value="3" defaultChecked={gameToEdit.avaliacao === 3}/>
+                    <label htmlFor="estrela3">★</label>
+                    
+                    <input type="radio" id="estrela2" name="avaliacao" value="2" defaultChecked={gameToEdit.avaliacao === 2}/>
+                    <label htmlFor="estrela2">★</label>
+                    
+                    <input type="radio" id="estrela1" name="avaliacao" value="1" defaultChecked={gameToEdit.avaliacao === 1}/>
+                    <label htmlFor="estrela1">★</label>
+                </fieldset>                
                 <section>
                     <input type="text"
                     id="comentario"
