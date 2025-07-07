@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+
 export interface IUserInfo{
     userEmail: string
 }
@@ -8,7 +10,7 @@ export default function UserInfo(userInfo: IUserInfo){
     const atIndex = userInfo.userEmail.replace(regex,"");
 
     return(
-        <p className='p'>Olá, {atIndex}</p>
+        <Typography variant="subtitle2">Olá, {atIndex}!</Typography>
     )
 
 }

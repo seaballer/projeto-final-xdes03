@@ -41,3 +41,27 @@ export const addGame = async (gameToSave: GameProps) => {
     }
 
 }
+
+export const editGame = async (id: number, formData: FormData) => {
+    const db = await DB.dbLer(arquivo);
+
+    const gameIndex = db.findIndex((p: GameProps) => p.id === id);
+    if (gameIndex === -1) return;
+
+    const gameOriginal = db[gameIndex];
+
+    const novaAvaliacao = Number(formData.get("avaliacao"));
+    const novoComentario = formData.get("comentario") as string;
+
+    const gameAtualizado: GameProps = {
+        ...gameOriginal,
+        avaliacao: novaAvaliacao,
+        comentario: novoComentario,
+    };
+
+    db.splice(gameIndex, 1, gameAtualizado);
+
+    await DB.dbSalvar(arquivo, db);
+
+    revalidatePath('/dashboard');
+}

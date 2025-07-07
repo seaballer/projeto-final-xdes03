@@ -6,24 +6,26 @@ import { GameProps } from "@/app/ui/GameCard";
 import axios from 'axios';
 import { addGame } from "@/app/lib/action";
 import Link from "next/link";
+import { Box, Button, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { ArrowBack, Search, Star } from "@mui/icons-material";
 
 
 export default function CreateGame() {
 
     const [gameCardState, setGameCardState] = useState<GameProps | null>(null)
 
-    const [isSaving, setIsSaving] = useState(false); //Para que o botão de adicionar jogo não seja clicado várias vezes enquanto estiver esperando o game ser adicionado na biblioteca, ou seja, sendo salvo
+    const [isSaving, setIsSaving] = useState(false); // Para que o botão de adicionar jogo não seja clicado várias vezes enquanto estiver esperando o game ser adicionado na biblioteca, ou seja, sendo salvo
 
     const SearchGame = async (formData:FormData) => {
 
-        const nomeJogo = formData.get('search_name') as string
+        const nomeJogo = formData.get('search_name') as string;
 
-        const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`)
-        const detalhesDoJogo = await axios.get(`/api/details?id=${data.results[0].id}`)
+        const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`);
+        const detalhesDoJogo = await axios.get(`/api/details?id=${data.results[0].id}`);
 
-        let newGameCard: GameProps
+        let newGameCard: GameProps;
 
-        const results = detalhesDoJogo.data
+        const results = detalhesDoJogo.data;
 
         if (!nomeJogo || nomeJogo.length === 0) {
             newGameCard = {
@@ -65,59 +67,86 @@ export default function CreateGame() {
     }
 
     return (
-    <section>
-        <Link href="/dashboard">Voltar</Link>
-        <form action={SearchGame} className="">
-            <input 
-                type="text"
-                id="search_name"
-                name="search_name"
-                placeholder="Pesquisar" 
-                aria-label="Pesquisar"
-            />
-            <label htmlFor="search_name" aria-hidden='true' hidden></label>
-            <button>
-                <Image 
-                    src="/icons/icons8-search.svg"
-                    alt="Botão de pesquisar"
-                    width={24}
-                    height={24}
+        <Box mt={8}>
+            <Box display="flex" alignItems="center" mb={4}>
+                <Button
+                    variant="outlined"
+                    startIcon={<ArrowBack />}
+                    component={Link}
+                    href="/dashboard"
+                >
+                    Voltar
+                </Button>
+                <Typography variant="h4" fontWeight="bold" ml={3}>
+                    Adicionar Jogo
+                </Typography>
+            </Box>
+
+            <Box component="form" action={SearchGame} display="flex" gap={2} mb={4}>
+                <TextField
+                    name="search_name"
+                    label="Pesquisar jogo"
+                    variant="outlined"
+                    fullWidth
                 />
-            </button>
-        </form>
-        {gameCardState && <GameCard {...gameCardState} />}
-        {gameCardState && gameCardState.id !== 0 && (
-            <form action={SaveGame}>
-                <p>Comentário:</p>
-                <input 
-                    type="text"
-                    id="comentario"
-                    name="comentario"
-                />
-                <label htmlFor="comentario"></label>
-                <p>Minha avaliação:</p>
-                <fieldset>
-                    {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
-                    <input type="radio" id="estrela 5" name="avaliacao" value="5" />
-                    <label htmlFor="estrela 5">★</label>
-                    
-                    <input type="radio" id="estrela 4" name="avaliacao" value="4" />
-                    <label htmlFor="estrela 4">★</label>
-                    
-                    <input type="radio" id="estrela 3" name="avaliacao" value="3" />
-                    <label htmlFor="estrela 3">★</label>
-                    
-                    <input type="radio" id="estrela 2" name="avaliacao" value="2" />
-                    <label htmlFor="estrela 2">★</label>
-                    
-                    <input type="radio" id="estrela 1" name="avaliacao" value="1" />
-                    <label htmlFor="estrela 1">★</label>
-                </fieldset>
-                <button disabled={isSaving}>
-                    {isSaving ? 'Salvando...' : 'Adicionar jogo'}
-                </button>
-            </form>
-        )}
-    </section>
+                <IconButton type="submit" color="primary">
+                    <Search />
+                </IconButton>
+            </Box>
+
+            {gameCardState && (
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    mb={4}
+                >
+                    <Box
+                    width={{ xs: "100%", sm: "66.66%", md: "50%" }} // equivalente a 12, 8 e 6 colunas do grid de 12 colunas
+                    >
+                    <   GameCard {...gameCardState} variant="searchResult" />
+                    </Box>
+                </Box>
+            )}
+
+            {gameCardState && gameCardState.id !== 0 && (
+                <Box component="form" action={SaveGame} display="flex" flexDirection="column" gap={3}>
+                    <FormControl>
+                        <Typography variant="body1" fontWeight="bold" mb={1}>Minha avaliação:</Typography>
+                        <RadioGroup row name="avaliacao">
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <FormControlLabel
+                                    key={num}
+                                    value={num.toString()}
+                                    control={<Radio />}
+                                    label={
+                                        <Box display="flex" alignItems="center" gap={0.5}>
+                                            {num}
+                                            <Star fontSize="small" color="action" />
+                                        </Box>
+                                    }
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+
+                    <TextField
+                        name="comentario"
+                        label="Comentário"
+                        multiline
+                        rows={3}
+                        fullWidth
+                    />
+
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={isSaving}
+                    >
+                        {isSaving ? 'Salvando...' : 'Adicionar jogo'}
+                    </Button>
+                </Box>
+            )}
+        </Box>
     )
 }

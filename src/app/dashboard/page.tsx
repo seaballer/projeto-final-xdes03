@@ -11,10 +11,13 @@ export default async function DisplayGames() {
     const dados: GameProps[] = await DB.dbLer(db);
 
     return (
-        <Box>
+        <Box
+            mt={8}
+        >
+            
             <Box
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="flex-start"
                 alignItems="center"
                 mb={4}
             >
@@ -27,6 +30,7 @@ export default async function DisplayGames() {
                     component={Link}
                     href={'/dashboard/create'}
                     startIcon={<Add />}
+                    sx={{ml: 3}}
                 >
                     Adicionar jogo
                 </Button>
@@ -41,17 +45,4 @@ export default async function DisplayGames() {
             </Grid>
         </Box>
     )
-
-    // const games = dados.map((game) => {
-    //     return <GameCard {...game} key={game.id} variant="dashboard"/>
-    // })
-
-    // return (
-    //     <div className="">
-    //         <Link href={'/dashboard/create'} className="">Adicionar jogo</Link>
-    //         <div className="">
-    //             {games}
-    //         </div>
-    //     </div>
-    // )
 }
