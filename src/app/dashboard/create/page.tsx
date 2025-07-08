@@ -1,25 +1,12 @@
 'use client'
-import Image from "next/image";
 import { useState } from "react";
 import GameCard from "@/app/ui/GameCard";
 import { GameProps } from "@/app/ui/GameCard";
 import axios from 'axios';
 import { addGame } from "@/app/lib/action";
 import Link from "next/link";
-import { Box, Button, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { ArrowBack, Search, Star } from "@mui/icons-material";
-import { useFormStatus } from "react-dom";
-
-/* Forma adequada de gerenciar o estado de um botão dentro de um formulário que usa a prop 'action' para chamar uma Server Action. Necessário para que o usuario não clique várias vezes enquanto o jogo está sendo salvo (adicionado na biblioteca) */
-function BotaoSalvar() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button type="submit" disabled={pending}>
-      {pending ? 'Salvando...' : 'Adicionar jogo'}
-    </button>
-  );
-}
 
 export default function CreateGame() {
 
@@ -33,7 +20,8 @@ export default function CreateGame() {
 
         event.preventDefault() //Evita que a página inteira recarregue
 
-        setIsSearching(true)
+        setIsSearching(true);
+        setIsSaving(false);
 
         const formData = new FormData(event.currentTarget)
 
@@ -65,8 +53,8 @@ export default function CreateGame() {
             }            
         }
 
-        setGameCardState(newGameCard)
-        setIsSearching(false)
+        setGameCardState(newGameCard);
+        setIsSearching(false);
     }    
 
     // Função de cliente que serve como 'ponte': prepara os dados e chama a Server Action (addGame)
@@ -81,8 +69,9 @@ export default function CreateGame() {
                 comentario: comentario
             }
             
-            await addGame(gameToSave)
+            await addGame(gameToSave);
         }
+        setIsSaving(true);
     }
 
     return (
@@ -101,7 +90,7 @@ export default function CreateGame() {
                 </Typography>
             </Box>
 
-            <Box component="form" action={SearchGame} display="flex" gap={2} mb={4}>
+            <Box component="form" onSubmit={SearchGame} display="flex" gap={2} mb={4}>
                 <TextField
                     name="search_name"
                     label="Pesquisar jogo"
