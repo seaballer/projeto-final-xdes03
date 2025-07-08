@@ -141,7 +141,7 @@ export default function GameCard(props: GameProps) {
         </DialogContent>
         <DialogActions>
             <Button onClick={() => setOpenEdit(false)} color="error">
-            Cancelar
+                Cancelar
             </Button>
             <Button
             variant="contained"
@@ -151,11 +151,11 @@ export default function GameCard(props: GameProps) {
                 formData.set("avaliacao", avaliacao.toString());
                 formData.set("comentario", comentario);
 
-                await editGame(props.id, formData);
                 setOpenEdit(false);
+                await editGame(props, formData);
             }}
             >
-            Salvar
+                Salvar
             </Button>
         </DialogActions>
     </Dialog>

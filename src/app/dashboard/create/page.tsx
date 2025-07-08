@@ -7,12 +7,27 @@ import { addGame } from "@/app/lib/action";
 import Link from "next/link";
 import { Box, Button, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { ArrowBack, Search, Star } from "@mui/icons-material";
+import { useFormStatus } from "react-dom";
+
+/* Forma adequada de gerenciar o estado de um botão dentro de um formulário que usa a prop 'action' para chamar uma Server Action. Necessário para que o usuario não clique várias vezes enquanto o jogo está sendo salvo (adicionado na biblioteca) */
+function BotaoSalvar() {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button
+        type="submit"
+        variant="contained"
+        color="primary"        
+    >
+        {pending ? 'Salvando...' : 'Adicionar jogo'}
+    </Button>
+  );
+}
 
 export default function CreateGame() {
 
     const [gameCardState, setGameCardState] = useState<GameProps | null>(null)
 
-    const [isSaving, setIsSaving] = useState(false); // Para que o botão de adicionar jogo não seja clicado várias vezes enquanto estiver esperando o game ser adicionado na biblioteca, ou seja, sendo salvo
     const [isSearching, setIsSearching] = useState(false) //Gerencia o estado do botão de pesquisa, para que o botão de pesquisa não seja clicado varias vezes enquanto faz a busca na API 
 
     /* Usando  event: React.FormEvent<HTMLFormElement e onSubmit no formulário por ser uma função Client Side*/
@@ -21,7 +36,6 @@ export default function CreateGame() {
         event.preventDefault() //Evita que a página inteira recarregue
 
         setIsSearching(true);
-        setIsSaving(false);
 
         const formData = new FormData(event.currentTarget)
 
@@ -71,7 +85,6 @@ export default function CreateGame() {
             
             await addGame(gameToSave);
         }
-        setIsSaving(true);
     }
 
     return (
@@ -145,14 +158,7 @@ export default function CreateGame() {
                         fullWidth
                     />
 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        disabled={isSaving}
-                    >
-                        {isSaving ? 'Salvando...' : 'Adicionar jogo'}
-                    </Button>
+                    <BotaoSalvar />
                 </Box>
             )}
         </Box>

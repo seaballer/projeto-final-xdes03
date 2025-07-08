@@ -3,7 +3,7 @@ import DB from "./db";
 import { GameProps } from "../ui/GameCard";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { obterSessaoSeValida } from "./session";
+import { obterSessaoSeValida, deletarCookieSessao } from "./session";
 
 const arquivo: string = 'jogos-salvos.json'
 
@@ -59,27 +59,49 @@ export const addGame = async (gameToSave: GameProps) => {
 
 }
 
-export const editGame = async (id: number, formData: FormData) => {
-    const db = await DB.dbLer(arquivo);
 
-    const gameIndex = db.findIndex((p: GameProps) => p.id === id);
-    if (gameIndex === -1) return;
+export const editGame = async (dadosDoJogo: GameProps, formData : FormData) => {
+    'use server';
 
-    const gameOriginal = db[gameIndex];
+    const sessao = await obterSessaoSeValida()
 
-    const novaAvaliacao = Number(formData.get("avaliacao"));
-    const novoComentario = formData.get("comentario") as string;
+    if(!sessao) {
+        throw new Error("Ação não autorizada. O usuário precisa estar logado.")
+    }
 
-    const gameAtualizado: GameProps = {
-        ...gameOriginal,
-        avaliacao: novaAvaliacao,
-        comentario: novoComentario,
-        userId: sessao.userId as string
-    };
+    const db = await DB.dbLer(arquivo) //Buscando o banco de dados mais recente antes de fazer o update
 
-    db.splice(gameIndex, 1, gameAtualizado);
+    const gameToEditIndex: number = db.findIndex((game: GameProps) => game.id === dadosDoJogo.id && game.userId === sessao.userId) //Buscando o índice correto no banco de dados mais recente
 
-    await DB.dbSalvar(arquivo, db);
+    /* Se o indice do jogo for encontrado (gameToEditIndex > -1) faz o update */
+    if (gameToEditIndex > -1) {
 
-    revalidatePath('/dashboard');
+        const novoComentario = formData.get('comentario') as string
+        const novaAvaliacao = Number(formData.get('avaliacao'))
+
+        const updatedGame: GameProps = {
+            ...dadosDoJogo,
+            avaliacao: novaAvaliacao,
+            comentario: novoComentario,
+            userId: sessao.userId as string
+        }
+
+        db.splice(gameToEditIndex,1,updatedGame);
+
+        await DB.dbSalvar(arquivo, db);
+
+        revalidatePath('/dashboard')
+        revalidatePath(`/dashboard/edit/${dadosDoJogo.id}`)
+    }
+
+    redirect('/dashboard');
+
+}
+
+// Ação para fazer o logout do usuário
+export async function logout() {
+
+  await deletarCookieSessao();
+  redirect('/auth/login'); // Redireciona para a página de login
+  
 }

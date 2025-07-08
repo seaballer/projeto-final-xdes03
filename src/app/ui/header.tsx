@@ -1,16 +1,15 @@
-import Link from "next/link"
-import { obterSessaoSeValida } from "../lib/session";
+'use client'
 import LogoutButton from "./logoutButton";
 import UserInfo from "./userInfo";
 import { AppBar, Box, Toolbar, Typography, Link as MuiLink } from "@mui/material";
+import { JWTPayload } from "jose";
 
-export default async function Header() {
+export default function Header({ sessao }: { sessao: JWTPayload | null }) {
 
-    const isLogged = await obterSessaoSeValida();
     let userEmail: string = "";
-    if(isLogged)
-    {
-        userEmail = isLogged?.userEmail as string;
+
+    if(sessao) {
+        userEmail = sessao.userEmail as string;
     }
 
     return (
@@ -30,7 +29,7 @@ export default async function Header() {
                     </Typography>
                 </Box>
 
-                {isLogged && (
+                {sessao && (
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <UserInfo userEmail={userEmail} />
                         <LogoutButton />
