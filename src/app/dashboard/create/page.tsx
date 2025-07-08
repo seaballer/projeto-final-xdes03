@@ -8,15 +8,34 @@ import { addGame } from "@/app/lib/action";
 import Link from "next/link";
 import { Box, Button, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { ArrowBack, Search, Star } from "@mui/icons-material";
+import { useFormStatus } from "react-dom";
 
+/* Forma adequada de gerenciar o estado de um botão dentro de um formulário que usa a prop 'action' para chamar uma Server Action. Necessário para que o usuario não clique várias vezes enquanto o jogo está sendo salvo (adicionado na biblioteca) */
+function BotaoSalvar() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? 'Salvando...' : 'Adicionar jogo'}
+    </button>
+  );
+}
 
 export default function CreateGame() {
 
     const [gameCardState, setGameCardState] = useState<GameProps | null>(null)
 
     const [isSaving, setIsSaving] = useState(false); // Para que o botão de adicionar jogo não seja clicado várias vezes enquanto estiver esperando o game ser adicionado na biblioteca, ou seja, sendo salvo
+    const [isSearching, setIsSearching] = useState(false) //Gerencia o estado do botão de pesquisa, para que o botão de pesquisa não seja clicado varias vezes enquanto faz a busca na API 
 
-    const SearchGame = async (formData:FormData) => {
+    /* Usando  event: React.FormEvent<HTMLFormElement e onSubmit no formulário por ser uma função Client Side*/
+    const SearchGame = async (event: React.FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault() //Evita que a página inteira recarregue
+
+        setIsSearching(true)
+
+        const formData = new FormData(event.currentTarget)
 
         const nomeJogo = formData.get('search_name') as string;
 
@@ -47,15 +66,15 @@ export default function CreateGame() {
         }
 
         setGameCardState(newGameCard)
+        setIsSearching(false)
     }    
 
+    // Função de cliente que serve como 'ponte': prepara os dados e chama a Server Action (addGame)
     const SaveGame = async (formData:FormData) => {
         const comentario = formData.get('comentario') as string
         const avaliacao = Number(formData.get('avaliacao'))
 
         if (gameCardState && gameCardState.id !== 0) {
-            setIsSaving(true)
-
             const gameToSave: GameProps = {
                 ...gameCardState,
                 avaliacao: avaliacao,
@@ -89,8 +108,8 @@ export default function CreateGame() {
                     variant="outlined"
                     fullWidth
                 />
-                <IconButton type="submit" color="primary">
-                    <Search />
+                <IconButton type="submit" color="primary" disabled={isSearching}>
+                  {isSearching ? <CircularProgress /> : <Search />}
                 </IconButton>
             </Box>
 

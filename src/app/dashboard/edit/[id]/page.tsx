@@ -1,8 +1,9 @@
 import { GameProps } from "@/app/ui/GameCard";
 import DB from "@/app/lib/db";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { obterSessaoSeValida } from "@/app/lib/session";
+import { updateGame } from "@/app/lib/action";
 
 const arquivo = 'jogos-salvos.json'
 
@@ -12,38 +13,32 @@ interface EditGameProps {
 
 export default async function EditGame({params} : EditGameProps) {
 
+    const sessao = await obterSessaoSeValida()
+
+    if (!sessao) {
+        throw new Error("Ação não autorizada. O usuário precisa estar logado.")
+    }
+
     const resolvedParams = await params;
 
     const id = parseInt(resolvedParams.id, 10);
     
     const gameDB = await DB.dbLer(arquivo);
 
-    const gameToEdit: GameProps = gameDB.find((p: GameProps) => p.id === id);
-    const gameToEditIndex: number = gameDB.findIndex((p) => p.id === id);
+    const gameToEditIndex: number = gameDB.findIndex((game) => game.id === id && game.userId === sessao.userId);
 
-    const atualizarGame = async (dadosDoJogo: GameProps, formData : FormData) => {
-        'use server';
-
-        const novoComentario = formData.get('comentario') as string
-        const novaAvaliacao = Number(formData.get('avaliacao'))
-
-        const updatedGame: GameProps = {
-            id: dadosDoJogo.id,
-            nome: dadosDoJogo.nome,
-            img: dadosDoJogo.img,
-            descricao: dadosDoJogo.descricao,
-            metacritic: dadosDoJogo.metacritic,
-            avaliacao: novaAvaliacao,
-            comentario: novoComentario
-        }
-
-        gameDB.splice(gameToEditIndex,1,updatedGame);
-
-        await DB.dbSalvar(arquivo, gameDB);
-
-        redirect('/dashboard');
-
+    /* Caso o índice do jogo não for encontrado (gameToEditIndex === -1) */
+    if (gameToEditIndex === -1) {
+        return (
+            <div>
+                <h2>Jogo não encontrado</h2>
+                <p>Este jogo não existe na sua biblioteca ou você não tem permissão para editá-lo.</p>
+                <Link href="/dashboard">Voltar para o Dashboard</Link>
+            </div>
+        );
     }
+
+    const gameToEdit: GameProps = gameDB[gameToEditIndex];
 
     return (
         <div>
@@ -59,7 +54,7 @@ export default async function EditGame({params} : EditGameProps) {
             <p>{gameToEdit.descricao}</p>
             <p>Comentário:</p>
             <p>{gameToEdit.comentario}</p>
-            <form action={atualizarGame.bind(null, gameToEdit)} className="">
+            <form action={updateGame.bind(null, gameToEdit)} className="">
                 <p>Minha avaliação:</p>
                 <fieldset>
                     {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
