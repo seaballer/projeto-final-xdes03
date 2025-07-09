@@ -21,14 +21,18 @@ export default async function DisplayGames() {
     const jogosDoUsuario: GameProps[] = jogos.filter((jogo) => jogo.userId === sessao.userId)
 
     return (
-        <Box>
+        <Box
+            mt={4}
+        >
             <Box
                 display="flex"
-                justifyContent="space-between"
+                justifyContent="flex-start"
                 alignItems="center"
-                mb={4}
+                mb={8}
+                py={2}
+                borderBottom='1px solid #ccc'
             >
-                <Typography variant="h3" fontWeight="bold">
+                <Typography variant="h3" fontWeight="bold" mx={4}>
                     Meus Jogos
                 </Typography>
                 <Button
@@ -37,6 +41,7 @@ export default async function DisplayGames() {
                     component={Link}
                     href={'/dashboard/create'}
                     startIcon={<Add />}
+                    sx={{ml: 3}}
                 >
                     Adicionar jogo
                 </Button>
@@ -51,5 +56,4 @@ export default async function DisplayGames() {
             </Grid>
         </Box>
     )
-    
 }

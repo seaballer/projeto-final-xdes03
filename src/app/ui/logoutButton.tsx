@@ -1,17 +1,14 @@
-import { redirect } from "next/navigation";
-import { deletarCookieSessao } from "../lib/session"
+import { logout } from "../lib/action";
+import { Box, Button } from "@mui/material";
+import { Logout } from "@mui/icons-material";
 
 export default function LogoutButton(){
 
-    const logout = async () => {
-        'use server';
-        await deletarCookieSessao();
-        redirect('/login');
-    }
-
     return(
-        <form action={logout}>
-            <button>Logout</button>
-        </form>
+        <Box
+            component="form"
+            action={logout}>
+            <Button variant="contained" type="submit" color="info" startIcon={<Logout />}>Logout</Button>
+        </Box>
     )  
 }

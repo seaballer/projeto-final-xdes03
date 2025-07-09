@@ -1,22 +1,26 @@
 'use client'
-import Image from "next/image";
 import { useState } from "react";
 import GameCard from "@/app/ui/GameCard";
 import { GameProps } from "@/app/ui/GameCard";
 import axios from 'axios';
 import { addGame } from "@/app/lib/action";
 import Link from "next/link";
+import { Box, Button, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { ArrowBack, Search, Star } from "@mui/icons-material";
 import { useFormStatus } from "react-dom";
-
 
 /* Forma adequada de gerenciar o estado de um botão dentro de um formulário que usa a prop 'action' para chamar uma Server Action. Necessário para que o usuario não clique várias vezes enquanto o jogo está sendo salvo (adicionado na biblioteca) */
 function BotaoSalvar() {
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" disabled={pending}>
-      {pending ? 'Salvando...' : 'Adicionar jogo'}
-    </button>
+    <Button
+        type="submit"
+        variant="contained"
+        color="primary"        
+    >
+        {pending ? 'Salvando...' : 'Adicionar jogo'}
+    </Button>
   );
 }
 
@@ -31,18 +35,18 @@ export default function CreateGame() {
 
         event.preventDefault() //Evita que a página inteira recarregue
 
-        setIsSearching(true)
+        setIsSearching(true);
 
         const formData = new FormData(event.currentTarget)
 
-        const nomeJogo = formData.get('search_name') as string
+        const nomeJogo = formData.get('search_name') as string;
 
-        const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`)
-        const detalhesDoJogo = await axios.get(`/api/details?id=${data.results[0].id}`)
+        const {data} = await axios.get(`/api/search?query=${encodeURIComponent(nomeJogo)}`);
+        const detalhesDoJogo = await axios.get(`/api/details?id=${data.results[0].id}`);
 
-        let newGameCard: GameProps
+        let newGameCard: GameProps;
 
-        const results = detalhesDoJogo.data
+        const results = detalhesDoJogo.data;
 
         if (!nomeJogo || nomeJogo.length === 0) {
             newGameCard = {
@@ -63,8 +67,8 @@ export default function CreateGame() {
             }            
         }
 
-        setGameCardState(newGameCard)
-        setIsSearching(false)
+        setGameCardState(newGameCard);
+        setIsSearching(false);
     }    
 
     // Função de cliente que serve como 'ponte': prepara os dados e chama a Server Action (addGame)
@@ -79,66 +83,94 @@ export default function CreateGame() {
                 comentario: comentario
             }
             
-            await addGame(gameToSave)
+            await addGame(gameToSave);
         }
     }
 
     return (
-    <section>
-        <Link href="/dashboard">Voltar</Link>
-        <form onSubmit={SearchGame} className="">
-            <input 
-                type="text"
-                id="search_name"
-                name="search_name"
-                placeholder="Pesquisar" 
-                aria-label="Pesquisar"
-            />
-            <label htmlFor="search_name" aria-hidden='true' hidden></label>
-            <button type="submit" disabled={isSearching}>
-                {
-                    isSearching ? 
-                    'Pesquisando...' :
-                    <Image 
-                        src="/icons/icons8-search.svg"
-                        alt="Botão de pesquisar"
-                        width={24}
-                        height={24}
-                    />
-                }
-            </button>
-        </form>
-        {gameCardState && <GameCard {...gameCardState} />}
-        {gameCardState && gameCardState.id !== 0 && (
-            <form action={SaveGame}>
-                <p>Comentário:</p>
-                <input 
-                    type="text"
-                    id="comentario"
-                    name="comentario"
+        <Box mt={4}>
+            <Box 
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                mb={4}
+                py={2}
+                borderBottom='1px solid #ccc'
+            >
+                <Typography variant="h3" fontWeight="bold" mx={4}>
+                    Adicionar Jogo
+                </Typography>
+
+                <Button
+                    variant="outlined"
+                    startIcon={<ArrowBack />}
+                    component={Link}
+                    href="/dashboard"
+                >
+                    Voltar
+                </Button>
+            </Box>
+
+            <Box component="form" onSubmit={SearchGame} display="flex" gap={2} m={4}>
+                <TextField
+                    name="search_name"
+                    label="Pesquisar jogo"
+                    variant="outlined"
+                    sx={{
+                        width: "30%",
+                    }}
                 />
-                <label htmlFor="comentario"></label>
-                <p>Minha avaliação:</p>
-                <fieldset>
-                    {/* A ordem é invertida (de 5 para 1) para facilitar o CSS (acender as estrelas) */}
-                    <input type="radio" id="estrela 5" name="avaliacao" value="5" />
-                    <label htmlFor="estrela 5">★</label>
-                    
-                    <input type="radio" id="estrela 4" name="avaliacao" value="4" />
-                    <label htmlFor="estrela 4">★</label>
-                    
-                    <input type="radio" id="estrela 3" name="avaliacao" value="3" />
-                    <label htmlFor="estrela 3">★</label>
-                    
-                    <input type="radio" id="estrela 2" name="avaliacao" value="2" />
-                    <label htmlFor="estrela 2">★</label>
-                    
-                    <input type="radio" id="estrela 1" name="avaliacao" value="1" />
-                    <label htmlFor="estrela 1">★</label>
-                </fieldset>
-                <BotaoSalvar />
-            </form>
-        )}
-    </section>
+                <IconButton type="submit" color="primary" disabled={isSearching}>
+                  {isSearching ? <CircularProgress size={24}/> : <Search />}
+                </IconButton>
+            </Box>
+
+            {gameCardState && (
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    mb={4}
+                >
+                    <Box
+                    width={{ xs: "100%", sm: "66.66%", md: "50%" }} // equivalente a 12, 8 e 6 colunas do grid de 12 colunas
+                    >
+                    <   GameCard {...gameCardState} variant="searchResult" />
+                    </Box>
+                </Box>
+            )}
+
+            {gameCardState && gameCardState.id !== 0 && (
+                <Box component="form" action={SaveGame} display="flex" flexDirection="column" gap={3} mx={8}>
+                    <FormControl>
+                        <Typography variant="body1" fontWeight="bold" mb={1}>Minha avaliação:</Typography>
+                        <RadioGroup row name="avaliacao">
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <FormControlLabel
+                                    key={num}
+                                    value={num.toString()}
+                                    control={<Radio />}
+                                    label={
+                                        <Box display="flex" alignItems="center" gap={0.5}>
+                                            {num}
+                                            <Star fontSize="small" color="action" />
+                                        </Box>
+                                    }
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+
+                    <TextField
+                        name="comentario"
+                        label="Deixe um comentário..."
+                        multiline
+                        rows={3}
+                        fullWidth
+                    />
+
+                    <BotaoSalvar />
+                </Box>
+            )}
+        </Box>
     )
 }

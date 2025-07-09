@@ -3,7 +3,7 @@ import DB from "./db";
 import { GameProps } from "../ui/GameCard";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { obterSessaoSeValida } from "./session";
+import { obterSessaoSeValida, deletarCookieSessao } from "./session";
 
 const arquivo: string = 'jogos-salvos.json'
 
@@ -60,7 +60,7 @@ export const addGame = async (gameToSave: GameProps) => {
 }
 
 
-export const updateGame = async (dadosDoJogo: GameProps, formData : FormData) => {
+export const editGame = async (dadosDoJogo: GameProps, formData : FormData) => {
     'use server';
 
     const sessao = await obterSessaoSeValida()
@@ -96,4 +96,12 @@ export const updateGame = async (dadosDoJogo: GameProps, formData : FormData) =>
 
     redirect('/dashboard');
 
+}
+
+// Ação para fazer o logout do usuário
+export async function logout() {
+
+  await deletarCookieSessao();
+  redirect('/auth/login'); // Redireciona para a página de login
+  
 }
