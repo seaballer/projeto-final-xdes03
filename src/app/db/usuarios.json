@@ -28,5 +28,10 @@
     "id": "07248f45-e3b7-48a7-a36b-e4ea2a8cd080",
     "email": "lucas4@email.com",
     "password": "$2b$10$2VON.4Udeqgi17GlU7qBkunaZJbuRAj8yesHIf6/Fh.7WAbh6CM7e"
+  },
+  {
+    "id": "190131aa-43b0-45f7-8810-5eb44ea01fd1",
+    "email": "teste2@gmail.com",
+    "password": "$2b$10$4mzF7XNUzpd5Q4Io5/oFXONk1OoA2A6ZEtd1KteEL1fSGFZhPQBFW"
   }
 ]
