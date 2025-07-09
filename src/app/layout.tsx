@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "MyGameList",
   description: "Biblioteca pessoal de jogos",
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.ico',
   },
 };
 
