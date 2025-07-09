@@ -88,8 +88,19 @@ export default function CreateGame() {
     }
 
     return (
-        <Box mt={8}>
-            <Box display="flex" alignItems="center" mb={4}>
+        <Box mt={4}>
+            <Box 
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                mb={4}
+                py={2}
+                borderBottom='1px solid #ccc'
+            >
+                <Typography variant="h3" fontWeight="bold" mx={4}>
+                    Adicionar Jogo
+                </Typography>
+
                 <Button
                     variant="outlined"
                     startIcon={<ArrowBack />}
@@ -98,20 +109,19 @@ export default function CreateGame() {
                 >
                     Voltar
                 </Button>
-                <Typography variant="h4" fontWeight="bold" ml={3}>
-                    Adicionar Jogo
-                </Typography>
             </Box>
 
-            <Box component="form" onSubmit={SearchGame} display="flex" gap={2} mb={4}>
+            <Box component="form" onSubmit={SearchGame} display="flex" gap={2} m={4}>
                 <TextField
                     name="search_name"
                     label="Pesquisar jogo"
                     variant="outlined"
-                    fullWidth
+                    sx={{
+                        width: "30%",
+                    }}
                 />
                 <IconButton type="submit" color="primary" disabled={isSearching}>
-                  {isSearching ? <CircularProgress /> : <Search />}
+                  {isSearching ? <CircularProgress size={24}/> : <Search />}
                 </IconButton>
             </Box>
 
@@ -130,7 +140,7 @@ export default function CreateGame() {
             )}
 
             {gameCardState && gameCardState.id !== 0 && (
-                <Box component="form" action={SaveGame} display="flex" flexDirection="column" gap={3}>
+                <Box component="form" action={SaveGame} display="flex" flexDirection="column" gap={3} mx={8}>
                     <FormControl>
                         <Typography variant="body1" fontWeight="bold" mb={1}>Minha avaliação:</Typography>
                         <RadioGroup row name="avaliacao">
@@ -152,7 +162,7 @@ export default function CreateGame() {
 
                     <TextField
                         name="comentario"
-                        label="Comentário"
+                        label="Deixe um comentário..."
                         multiline
                         rows={3}
                         fullWidth

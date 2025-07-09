@@ -7,8 +7,9 @@ import { LoginCredentials } from "../login/page";
 import { criarUsuario } from "@/app/lib/credentials";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
-import { Box, Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, InputAdornment, TextField, Typography, Link as MuiLink } from "@mui/material";
 import { Email, Lock } from "@mui/icons-material";
+import Link from "next/link";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -134,6 +135,10 @@ export default function CreateUser() {
             <Button type="submit" variant="contained" fullWidth>
                 Cadastrar
             </Button>
+            
+            <Typography variant="body1" align="center">
+                Já possui cadastro?{' '}<MuiLink component={Link} href="/login" underline="hover">Login</MuiLink>
+            </Typography>
 
         </Box>
     )

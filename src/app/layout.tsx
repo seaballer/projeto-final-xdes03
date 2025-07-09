@@ -8,6 +8,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { Box } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Ranking de jogos",
@@ -24,9 +25,19 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body
+        style={{
+            margin: 0,
+            padding: 0,
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+        }}
+      >
         <Header sessao={sessao} />
-        {children}
+        <Box sx={{flex:1}}>
+          {children}
+        </Box>
         <Footer />
         <Toaster position="top-right" />
       </body>

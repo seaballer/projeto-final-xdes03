@@ -22,16 +22,17 @@ export default async function DisplayGames() {
 
     return (
         <Box
-            mt={8}
+            mt={4}
         >
-            
             <Box
                 display="flex"
                 justifyContent="flex-start"
                 alignItems="center"
-                mb={4}
+                mb={8}
+                py={2}
+                borderBottom='1px solid #ccc'
             >
-                <Typography variant="h3" fontWeight="bold">
+                <Typography variant="h3" fontWeight="bold" mx={4}>
                     Meus Jogos
                 </Typography>
                 <Button

@@ -14,7 +14,7 @@ export default function Header({ sessao }: { sessao: JWTPayload | null }) {
 
     return (
         <AppBar position="static" color="primary" component="header">
-            <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 1, my: 2 }}>
                 <Box>
                     <Typography variant="h6">
                         <MuiLink href="https://rawg.io/apidocs" target="_blank" rel="noopener" sx={{ color:"white" }}>
