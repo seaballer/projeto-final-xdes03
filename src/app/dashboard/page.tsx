@@ -1,7 +1,7 @@
 import Link from "next/link";
 import DB from "../lib/db";
-import GameCard, { GameProps } from "../ui/GameCard";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { GameProps } from "../ui/GameCard";
+import { Box, Button, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { obterSessaoSeValida } from "../lib/session";
 import { redirect } from "next/navigation";

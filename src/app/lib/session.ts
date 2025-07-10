@@ -1,6 +1,6 @@
 "use server";
 
-import { JWTPayload, jwtVerify, SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
 const obterChave = (): Uint8Array => {

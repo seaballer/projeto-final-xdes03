@@ -52,7 +52,7 @@ export default function FilteredGameList({ jogosDoUsuario }: FilteredListProps) 
                 // 3. Se ele tem jogos, mas o filtro não encontrou nada, mostramos esta mensagem
                 (
                     <Typography variant="h4" fontWeight="bold" mx={4} sx={{textAlign: 'center'}}>
-                        Nenhum jogo encontrado na sua biblioteca com o termo "{termoBusca}".
+                        Nenhum jogo encontrado na sua biblioteca com o termo &quot;{termoBusca}&quot;.
                     </Typography>
                 )
             }

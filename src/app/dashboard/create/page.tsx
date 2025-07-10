@@ -5,7 +5,7 @@ import { GameProps } from "@/app/ui/GameCard";
 import axios from 'axios';
 import { addGame } from "@/app/lib/action";
 import Link from "next/link";
-import { Box, Button, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, FormControlLabel, IconButton, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { ArrowBack, Search, Star } from "@mui/icons-material";
 import { useFormStatus } from "react-dom";
 
