@@ -49,16 +49,20 @@ export default function GameCard(props: GameProps) {
                     <Typography variant="h6" gutterBottom>
                         {props.nome}
                     </Typography>
-                    {props.avaliacao && (
-                            <>
-                                <Box display="flex" alignItems="center">
-                                <Typography variant="h6">
-                                        {props.avaliacao}
-                                </Typography>
-                                        <Star />
-                                    </Box>
-                            </>
-                        )}
+
+                    {/*
+    '                   A condição `(props.avaliacao ?? 0) > 0` é usada para:
+                        1. Garantir que temos um número para a comparação, usando `?? 0` como fallback para `null` ou `undefined`.
+                        2. Fazer uma comparação booleana explícita (`> 0`) para evitar que o React renderize valor "falsy" 0 literalmente na tela caso o jogo não tenha sido avaliado.'
+                    */}
+                    {(props.avaliacao ?? 0) > 0 && (
+                        <Box display="flex" alignItems="center">
+                            <Typography variant="h6">
+                                {props.avaliacao}
+                            </Typography>
+                            <Star />
+                        </Box>
+                    )}
                 </Box>
 
                 <Collapse in={expandido} timeout={"auto"} unmountOnExit>

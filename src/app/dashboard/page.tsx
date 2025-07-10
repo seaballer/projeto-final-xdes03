@@ -5,6 +5,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { obterSessaoSeValida } from "../lib/session";
 import { redirect } from "next/navigation";
+import FilteredGameList from "../ui/FilteredGameList";
 
 const db : string = 'jogos-salvos.json';
 
@@ -47,13 +48,7 @@ export default async function DisplayGames() {
                 </Button>
             </Box>
 
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {jogosDoUsuario.map((game) =>(
-                    <Grid key={game.id} size={{ xs: 2, sm: 4, md: 4 }}>
-                        <GameCard {...game} key={game.id} variant="dashboard"/>
-                    </Grid>
-                ))}
-            </Grid>
+            <FilteredGameList jogosDoUsuario={jogosDoUsuario}/>
         </Box>
     )
 }
