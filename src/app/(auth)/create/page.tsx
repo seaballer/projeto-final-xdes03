@@ -59,7 +59,9 @@ export default function CreateUser() {
                 toast.success(retorno.success);
                 router.push("/login");
             }
-        } catch (error: any) {
+        } 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any    
+        catch (error: any) {
             toast.error("Erro ao criar usuário");
             console.log(error);
         }

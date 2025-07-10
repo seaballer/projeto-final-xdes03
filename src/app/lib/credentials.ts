@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 const dbUsuarios = "usuarios.json";
 
 // função auxiliar
+// eslint-disable-next-line @typescript-eslint/no-explicit-any 
 function encontrarUsuarioPorEmail(usuarios: any[], email: string) {
     return usuarios.find(user => user.email.toLowerCase() === email.toLowerCase()); // usar lowercase pra evitar dupes como AAA@site e aaa@site
 }
