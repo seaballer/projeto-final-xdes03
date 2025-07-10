@@ -91,7 +91,6 @@ export const editGame = async (dadosDoJogo: GameProps, formData : FormData) => {
         await DB.dbSalvar(arquivo, db);
 
         revalidatePath('/dashboard')
-        revalidatePath(`/dashboard/edit/${dadosDoJogo.id}`)
     }
 
     redirect('/dashboard');
